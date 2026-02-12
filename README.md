@@ -1,112 +1,137 @@
-# 💖 Will You Be My Galentine?
-
-An interactive, romantic web experience to ask someone to be your Galentine! This project is a beautifully designed single-page application with smooth animations, heartfelt memories, and a fun interactive "No" button that evades clicks.
-
-## ✨ Features
-
-- **Landing Section** – A charming introduction with a call-to-action button
-- **Memories Carousel** – Showcase your favorite moments or reasons why you cherish the friendship
-- **Evasive "No" Button** – The "No" button escapes when hovered over (they can't escape! 😄)
-- **Celebration Screen** – Confetti animation and a victory message when they click "YES"
-- **Background Music** – Plays an instrumental as they explore (music toggle available)
-- **Floating Hearts** – Ambient decorative hearts floating across the background
-- **Responsive Design** – Works beautifully on mobile and desktop devices
-- **Smooth Scrolling** – Navigate through sections with smooth scroll animations
-
-## 🚀 Getting Started
-
-### Prerequisites
-- A modern web browser (Chrome, Firefox, Safari, Edge)
-- A web server (for local testing) or simply open `index.html` in your browser
-
-### Setup
-
-1. **Clone or download** the project files
-2. **Add your music** – Replace `song.mp3` with your own background music file in the root directory
-3. **Customize the memories** – Edit the memory cards in `index.html` with your own messages
-4. **Open in browser** – Open `index.html` directly or serve it via a local server
-
-### To Run Locally
-```bash
-# Option 1: Python
-python -m http.server 8000
-
-# Option 2: Node.js (with http-server)
-npx http-server
-
-# Then navigate to http://localhost:8000
-```
-
-## 🎨 Customization
-
-### Edit Memories
-In `index.html`, find the memory cards section and modify the text and emojis:
-```html
-<div class="memory-card">
-    <span class="emoji">😂</span>
-    <h3>Your Title</h3>
-    <p>Your custom message here</p>
-</div>
-```
-
-### Change Colors
-Modify the CSS variables in the `<style>` section:
-```css
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Galentine Sweetheart 💗</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
 :root {
-    --pink-primary: #FFADCB;
-    --pink-dark: #FF85B3;
-    --lavender: #D4C1EC;
-    --cream: #FFF9FB;
-    --text-color: #7A5C61;
+  --bg: #ffe6f0;
+  --card: #ffffff;
+  --primary: #ff5c8a;
+  --secondary: #ff99c8;
 }
-```
 
-### Update Music
-Replace the source link in the audio tag:
-```html
-<audio id="bgMusic" loop>
-    <source src="your-song.mp3" type="audio/mpeg">
-</audio>
-```
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, var(--bg), #fff);
+  overflow-x: hidden;
+}
 
-### Celebration Message
-Find the celebration section and customize the message:
-```html
-<p><strong>When:</strong> Whenever you want jaanemann</p>
-<p><strong>Where:</strong> Our favorite spot</p>
-```
+section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
 
-## 🎵 Music Note
+.card {
+  background: var(--card);
+  padding: 25px;
+  border-radius: 16px;
+  max-width: 360px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
 
-The project includes a placeholder for background music (`song.mp3`). For the best experience:
-- Use royalty-free music or a song you have permission to use
-- MP3 format works best
-- Host the file in the same directory as `index.html`
+h1 { color: var(--primary); }
 
-Some great sources:
-- [Pixabay Music](https://pixabay.com/music/)
-- [Freesound](https://freesound.org/)
-- Your own music files
+button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  margin: 8px;
+  cursor: pointer;
+}
 
-## 📱 Browser Compatibility
+button:hover {
+  background: var(--secondary);
+}
 
-- ✅ Chrome/Chromium (latest)
-- ✅ Firefox (latest)
-- ✅ Safari (latest)
-- ✅ Edge (latest)
-- ✅ Mobile browsers
+#noBtn {
+  position: relative;
+}
 
-## 📝 License
+.confetti {
+  position: fixed;
+  top: -10px;
+  width: 10px;
+  height: 10px;
+  animation: fall 3s linear infinite;
+}
 
-Feel free to use and customize this for your special someone! 💕
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(360deg); }
+}
+</style>
+</head>
+<body>
 
-## 💬 Tips
+<audio id="bgMusic" src="song.mp3" loop></audio>
 
-- Personalize it! The more custom details, the more meaningful it becomes
-- Test on the device your Galentine will use it on
-- Make sure the music file is ready before sharing
-- The evasive "No" button is just for fun – they'll want to click "YES"! ✨
+<section>
+  <div class="card">
+    <h1>Happy Galentine, Sweetheart 💗</h1>
+    <p>
+      You’re literally my comfort person 🥺💞  
+      Everything feels better when you’re around.
+    </p>
+    <button onclick="start()">Start Here</button>
+  </div>
+</section>
 
----
+<section id="ask" style="display:none;">
+  <div class="card">
+    <h1>Sweetheart, will you be my Galentine? 💕</h1>
+    <button onclick="yes()">Yes, obviously! 😌💗</button>
+    <button id="noBtn" onmouseover="moveNo()">NO! 😒</button>
+  </div>
+</section>
 
-Made with 💖 for asking that special person to be your Galentine!
+<section id="yay" style="display:none;">
+  <div class="card">
+    <h1>YAYYYY 🥳💞</h1>
+    <p>
+      Best friends forever ♾️  
+      From our cute lil fights over Mansi to our silly jealousy & possessiveness 😭💗
+    </p>
+    <p>
+      No matter what, it’s always you and me 🫶💞
+    </p>
+  </div>
+</section>
+
+<script>
+function start() {
+  document.getElementById("bgMusic").play().catch(()=>{});
+  document.getElementById("ask").style.display = "flex";
+  window.scrollTo(0, document.body.scrollHeight);
+}
+
+function moveNo() {
+  const b = document.getElementById("noBtn");
+  b.style.left = Math.random() * 240 - 120 + "px";
+  b.style.top = Math.random() * 240 - 120 + "px";
+}
+
+function yes() {
+  document.getElementById("yay").style.display = "flex";
+  for (let i = 0; i < 40; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = ["#ff5c8a","#ff99c8","#ffc2d1"][Math.floor(Math.random()*3)];
+    c.style.animationDelay = Math.random() * 2 + "s";
+    document.body.appendChild(c);
+  }
+  window.scrollTo(0, document.body.scrollHeight);
+}
+</script>
+
+</body>
+</html>
